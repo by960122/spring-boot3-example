@@ -1,0 +1,57 @@
+### 实体类注入
+GET https://127.0.0.1:7443/test/response
+Authorization: test
+
+### mongodb
+GET https://127.0.0.1:7443/test/mongodb
+Authorization: test
+
+### mysql 多数据源
+GET http://127.0.0.1:8090/test/mysql/get?test_name=aa
+Authorization: test
+
+### mysql 多数据源
+POST http://127.0.0.1:8090/test/mysql/post
+Content-Type: application/json
+Authorization: test
+
+{
+  "test_name": "aaa"
+}
+
+### 异常
+GET https://127.0.0.1:7443/test/exception
+
+### 参数校验
+POST https://127.0.0.1:7443/test/validation
+Content-Type: application/json
+Authorization: test
+
+{
+  "age": 1,
+  "name": "123"
+}
+
+### 异步执行
+POST https://127.0.0.1:7443/test/async?count=100
+Content-Type: application/json
+
+### 事件消费
+POST https://127.0.0.1:7443/test/event?count=10
+Content-Type: application/json
+
+### kafka
+GET https://127.0.0.1:7443/test/kafka
+Content-Type: application/json
+Authorization: test
+
+### es
+POST https://127.0.0.1:7443/es/create-index
+Content-Type: application/json
+Authorization: test
+
+{
+  "index_name":"index_test",
+  "aliases_name":"test",
+  "num_of_shards":1
+}

@@ -1,0 +1,94 @@
+# keytool -genkey -alias tomcat -keyalg RSA -keystore C:\WorkSpace\spring-boot3-example\src\main\resources\javastack.keystore
+server:
+  port: 7443
+  http-port: 8090
+  http2:
+    enabled: true
+  undertow:
+    io-threads: 16
+    worker-threads: 256
+    buffer-size: 1024
+    buffers-per-region: 1024
+    direct-buffers: true
+  ssl:
+    protocol: TLS
+    key-store: classpath:javastack.keystore
+    key-store-password: By96o122
+    key-store-type: JKS
+
+spring:
+  application:
+    name: BYDylan
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: NON_EMPTY
+    # 返回参数将驼峰转换为下划线
+    property-naming-strategy: SNAKE_CASE
+  sql: # 初始化sql
+    init:
+      mode: ALWAYS
+      schema-locations: classpath:schema/init.sql
+      continue-on-error: true
+#  kafka:
+#    enabled: false
+#    consumer:
+#      bootstrap-servers: 127.0.0.1:9092
+#      enable-auto-commit: true
+#      auto-offset-reset: earliest
+#      auto-commit-interval: 10
+#      group-id: group1
+#      concurrency: 1
+#      client-id: consumer-client
+#      max-poll-records: 1000
+#      session:
+#        timeout: 60
+#    producer:
+#      bootstrap-servers: 127.0.0.1:9092
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+kafka:
+  enabled: false
+  consumer:
+    bootstrap-servers: 127.0.0.1:9092
+    enable-auto-commit: true
+    auto-offset-reset: earliest
+    auto-commit-interval: 10
+    group-id: group1
+    concurrency: 1
+    client-id: consumer-client
+    max-poll-records: 1000
+    session:
+      timeout: 60
+    heartbeat-interval: 10
+
+# 整合mybaitis
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml,classpath:mapper/*.xml
+  configuration:
+    cache-enabled: true
+    lazy-loading-enabled: true
+    log-prefix: dao.
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  config-location: classpath:mybatis-config.xml
+
+# 消除一个告警
+# logging.level.org.springframework.data.convert.CustomConversions: ERROR
+
+cron:
+  dynamic: 0 0 0/1 * * ?
+
+person:
+  lastName: hello
+  age: 18
+  boss: false
+  birth: 2021/12/22
+  maps: { k1:v1,k2:v2 }
+  lists:
+    - list1
+    - list2
+  dog:
+    name: dog
+    age: 3

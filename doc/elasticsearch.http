@@ -1,0 +1,181 @@
+### 查看证书
+GET https://127.0.0.1:9200/_ssl/certificates
+Content-Type: application/json
+Authorization: Basic elastic By96o122
+
+### 查看许可证
+### curl -XPUT -u elastic http://127.0.0.1:9200/_license?acknowledge=true -H "Content-Type: application/json" -d @license.json
+GET https://127.0.0.1:9200/_license
+Content-Type: application/json
+Authorization: Basic elastic By96o122
+
+### 集群状态
+GET https://127.0.0.1:9200
+Content-Type: application/json
+Authorization: Basic elastic By96o122
+
+### 查询全部索引
+GET https://127.0.0.1:9200/_cat/indices?v
+Content-Type: application/json
+Authorization: Basic elastic By96o122
+
+### 创建索引 静态设置: 只能在创建索引或关闭状态的索引上设置, 例如 number_of_shards
+PUT https://127.0.0.1:9200/index_test
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+{
+  "settings": {
+    "number_of_shards": "1",
+    "number_of_relicas": "1"
+  }
+}
+
+### 修改索引
+PUT https://127.0.0.1:9200/index_test/_settings
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+{
+  "number_of_shards": "1",
+  "number_of_replicas": "1"
+}
+
+### 查看索引是否存在
+HEAD https://127.0.0.1:9200/index_test_new
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+### 删除索引
+DELETE https://127.0.0.1:9200/index_test
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+### 重新创建文档: 如果索引没有文档(记录), 则无法成功
+POST https://127.0.0.1:9200/_reindex
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+{
+  "source": {
+    "index": "index_test"
+  },
+  "dest": {
+    "index": "index_test_new"
+  }
+}
+
+### 插入数据(全量)
+# 创建 /_create/1 或 ?op_type=create
+# 更新 ?op_type=index
+PUT https://127.0.0.1:9200/index_test/_doc/1
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+{
+  "aaa": "bbb"
+}
+
+### 更新数据(部分字段)
+POST https://127.0.0.1:9200/index_test/_update/1
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+{
+  "doc": {
+    "aaa": "bbb"
+  }
+}
+
+### 插入数据-自动生成id(需改为post)
+POST https://127.0.0.1:9200/index_test/_doc
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+{
+  "aaa": "bbb"
+}
+
+### 分页查询索引
+GET https://127.0.0.1:9200/test/_search?from=1&size=1
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+### 查询某个索引
+GET https://127.0.0.1:9200/kibana_sample_data_flights/_search
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+{
+  "query": {
+    "match": {
+      "字段名": "值"
+    }
+  }
+}
+
+### 查询索引的数据
+GET https://127.0.0.1:9200/kibana_sample_data_flights/_doc/1
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+### 查询索引的数据是否存在
+HEAD https://127.0.0.1:9200/kibana_sample_data_flights/_doc/1
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+### 查询索引的具体字段 ?_source=false 只查询索引的默认属性(source里的字段相当于mysql的字段)
+GET https://127.0.0.1:9200/kibana_sample_data_flights/_doc/1
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+### 查询索引的具体字段
+GET https://127.0.0.1:9200/kibana_sample_data_flights/_source/1
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+### 批量查询 或者 {"ids":[1,2]}
+GET https://127.0.0.1:9200/mget
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+{
+  "doc": [
+    {
+      "index": "index_1",
+      "source": false,
+      "_id": "1"
+    },
+    {
+      "index": "index_2",
+      "_id": "2"
+    }
+  ]
+}
+
+### 批量写入 或者 /index/_bulk, 必须是2行, 不能格式化成多行 这2行成对出现(每行数据都要指定action)
+POST https://127.0.0.1:9200/_bulk
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+{"create": {"_index": "goods","_id": "1"}}
+{"data对象"}
+
+
+### 删除数据
+DELETE https://127.0.0.1:9200/kibana_sample_data_flights/_doc/1
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+### 删除数据-按查询条件
+DELETE https://127.0.0.1:9200/kibana_sample_data_flights/_delete_by_query
+Authorization: Basic elastic By96o122
+Content-Type: application/json
+
+{
+  "query": {
+    "term": {
+      "pricce": 999
+    }
+  }
+}
